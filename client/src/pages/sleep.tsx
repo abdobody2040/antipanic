@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "wouter";
 import { useLanguage } from "@/hooks/use-language";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,7 @@ interface SleepExercise {
   title: string;
   description: string;
   duration: string;
+  durationMinutes: number;
   category: string;
   icon: string;
   color: string;
@@ -19,6 +20,9 @@ export default function Sleep() {
   const [selectedExercise, setSelectedExercise] = useState<SleepExercise | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
+  const [totalTime, setTotalTime] = useState(0);
+  const [currentStep, setCurrentStep] = useState(0);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const sleepExercises: SleepExercise[] = [
     {
@@ -26,6 +30,7 @@ export default function Sleep() {
       title: t('bedtimeRoutine'),
       description: t('calmingRoutine'),
       duration: '10 mins',
+      durationMinutes: 10,
       category: 'routine',
       icon: '🛏️',
       color: 'bg-indigo-500'
@@ -35,6 +40,7 @@ export default function Sleep() {
       title: t('forestDreams'),
       description: t('peacefulJourneyWoods'),
       duration: '20 mins',
+      durationMinutes: 20,
       category: 'story',
       icon: '🌲',
       color: 'bg-green-500'
@@ -44,6 +50,7 @@ export default function Sleep() {
       title: t('oceanWaves'),
       description: t('driftAwayOcean'),
       duration: '15 mins',
+      durationMinutes: 15,
       category: 'story',
       icon: '🌊',
       color: 'bg-blue-500'
@@ -53,6 +60,7 @@ export default function Sleep() {
       title: t('bodyScanSleep'),
       description: t('releaseTensionHeadToe'),
       duration: '12 mins',
+      durationMinutes: 12,
       category: 'relaxation',
       icon: '😴',
       color: 'bg-purple-500'
@@ -62,6 +70,7 @@ export default function Sleep() {
       title: t('sleepBreathing478'),
       description: t('breathingFasterSleep'),
       duration: '8 mins',
+      durationMinutes: 8,
       category: 'breathing',
       icon: '💨',
       color: 'bg-teal-500'
@@ -71,6 +80,7 @@ export default function Sleep() {
       title: t('gratitudeBeforeSleep'),
       description: t('endDayThankfulness'),
       duration: '6 mins',
+      durationMinutes: 6,
       category: 'meditation',
       icon: '🙏',
       color: 'bg-pink-500'
@@ -87,6 +97,117 @@ export default function Sleep() {
   ];
 
   const [selectedCategory, setSelectedCategory] = useState('all');
+
+  // Timer logic
+  useEffect(() => {
+    if (selectedExercise && isPlaying && currentTime < totalTime) {
+      intervalRef.current = setInterval(() => {
+        setCurrentTime(prev => {
+          const newTime = prev + 1;
+          
+          // Update current step based on progress
+          const progress = newTime / totalTime;
+          const newStep = Math.floor(progress * getStepsForExercise(selectedExercise.category).length);
+          setCurrentStep(Math.min(newStep, getStepsForExercise(selectedExercise.category).length - 1));
+          
+          if (newTime >= totalTime) {
+            setIsPlaying(false);
+            return totalTime;
+          }
+          return newTime;
+        });
+      }, 1000);
+    } else {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    }
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [selectedExercise, isPlaying, currentTime, totalTime]);
+
+  const startExercise = (exercise: SleepExercise) => {
+    setSelectedExercise(exercise);
+    setTotalTime(exercise.durationMinutes * 60); // Convert minutes to seconds
+    setCurrentTime(0);
+    setCurrentStep(0);
+    setIsPlaying(false);
+  };
+
+  const togglePlayPause = () => {
+    setIsPlaying(!isPlaying);
+  };
+
+  const restartExercise = () => {
+    setCurrentTime(0);
+    setCurrentStep(0);
+    setIsPlaying(false);
+  };
+
+  const getStepsForExercise = (category: string) => {
+    switch (category) {
+      case 'story':
+        return [
+          t('language') === 'ar' ? 'أغلق عينيك واجعل جسدك مسترخياً...' : 'Close your eyes and let your body relax...',
+          t('language') === 'ar' ? 'تخيل نفسك في مكان هادئ وجميل...' : 'Imagine yourself in a peaceful, beautiful place...',
+          t('language') === 'ar' ? 'استمع لأصوات الطبيعة من حولك...' : 'Listen to the sounds of nature around you...',
+          t('language') === 'ar' ? 'تنفس بعمق واتركد نفسك تنجرف للنوم...' : 'Breathe deeply and let yourself drift into sleep...'
+        ];
+      case 'breathing':
+        return [
+          t('language') === 'ar' ? 'اجلس أو استلق في وضع مريح...' : 'Sit or lie down in a comfortable position...',
+          t('language') === 'ar' ? 'استنشق لمدة 4 ثوان...' : 'Inhale for 4 seconds...',
+          t('language') === 'ar' ? 'احبس النفس لمدة 7 ثوان...' : 'Hold your breath for 7 seconds...',
+          t('language') === 'ar' ? 'ازفر ببطء لمدة 8 ثوان...' : 'Exhale slowly for 8 seconds...',
+          t('language') === 'ar' ? 'كرر هذا النمط حتى تشعر بالاسترخاء...' : 'Repeat this pattern until you feel relaxed...'
+        ];
+      case 'relaxation':
+        return [
+          t('language') === 'ar' ? 'ابدأ من أعلى رأسك...' : 'Start from the top of your head...',
+          t('language') === 'ar' ? 'لاحظ أي توتر في عضلات وجهك...' : 'Notice any tension in your facial muscles...',
+          t('language') === 'ar' ? 'اترك التوتر يذوب من كتفيك...' : 'Let the tension melt away from your shoulders...',
+          t('language') === 'ar' ? 'استرخ صدرك وبطنك...' : 'Relax your chest and abdomen...',
+          t('language') === 'ar' ? 'اتركد التوتر يخرج من ساقيك وقدميك...' : 'Let tension flow out of your legs and feet...'
+        ];
+      case 'routine':
+        return [
+          t('language') === 'ar' ? 'تأكد من أن غرفتك مظلمة ومريحة...' : 'Make sure your room is dark and comfortable...',
+          t('language') === 'ar' ? 'ضع جهازك بعيداً عنك...' : 'Put your devices away from you...',
+          t('language') === 'ar' ? 'خذ أنفاس عميقة وبطيئة...' : 'Take deep, slow breaths...',
+          t('language') === 'ar' ? 'فكر في شيء إيجابي حدث اليوم...' : 'Think of something positive that happened today...',
+          t('language') === 'ar' ? 'اتركد نفسك تسترخي تماماً...' : 'Let yourself completely relax...'
+        ];
+      case 'meditation':
+        return [
+          t('language') === 'ar' ? 'فكر في ثلاثة أشياء تشعر بالامتنان لها اليوم...' : 'Think of three things you\'re grateful for today...',
+          t('language') === 'ar' ? 'تذكر لحظة جميلة من يومك...' : 'Remember a beautiful moment from your day...',
+          t('language') === 'ar' ? 'أرسل المحبة لنفسك ولأحبائك...' : 'Send love to yourself and your loved ones...',
+          t('language') === 'ar' ? 'اشعر بالسلام والهدوء يملأ قلبك...' : 'Feel peace and tranquility fill your heart...',
+          t('language') === 'ar' ? 'احتفظ بهذا الشعور واتركد نفسك تنام...' : 'Hold onto this feeling and let yourself fall asleep...'
+        ];
+      default:
+        return [
+          t('language') === 'ar' ? 'استرخ واتبع التوجيهات...' : 'Relax and follow the guidance...',
+          t('language') === 'ar' ? 'خذ وقتك ولا تستعجل...' : 'Take your time and don\'t rush...',
+          t('language') === 'ar' ? 'اتركد نفسك تسترخي تماماً...' : 'Let yourself completely relax...'
+        ];
+    }
+  };
+
+  const getCurrentStepContent = () => {
+    if (!selectedExercise) return '';
+    const steps = getStepsForExercise(selectedExercise.category);
+    return steps[currentStep] || steps[0];
+  };
+
+  const getProgressPercentage = () => {
+    if (totalTime === 0) return 0;
+    return Math.round((currentTime / totalTime) * 100);
+  };
 
   const getFilteredExercises = () => {
     return selectedCategory === 'all' 
@@ -116,34 +237,69 @@ export default function Sleep() {
             <div className="text-6xl mb-4">{selectedExercise.icon}</div>
             <h2 className="text-2xl font-semibold mb-2">{selectedExercise.title}</h2>
             <p className="text-white/80 mb-4">{selectedExercise.description}</p>
-            <div className="text-3xl font-mono text-indigo-200">
-              {formatTime(currentTime)}
+            <div className="text-3xl font-mono text-indigo-200 mb-4">
+              {formatTime(totalTime - currentTime)}
             </div>
+            
+            {/* Progress Bar */}
+            <div className="w-full bg-white/20 rounded-full h-2 mb-2">
+              <div 
+                className="bg-white h-2 rounded-full transition-all duration-1000 ease-out"
+                style={{ width: `${getProgressPercentage()}%` }}
+              ></div>
+            </div>
+            <p className="text-white/60 text-sm">
+              {getProgressPercentage()}% {t('completed')}
+            </p>
           </div>
 
           <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-8 mb-8">
             <div className="text-center space-y-6">
-              <div className="w-32 h-32 bg-white/20 rounded-full mx-auto flex items-center justify-center">
-                <Moon className="w-16 h-16 text-white/80" />
+              <div className={`w-32 h-32 rounded-full mx-auto flex items-center justify-center transition-all duration-1000 ${
+                isPlaying ? 'bg-white/30 animate-pulse' : 'bg-white/20'
+              }`}>
+                <Moon className={`w-16 h-16 text-white/80 transition-transform duration-2000 ${
+                  isPlaying ? 'rotate-180' : 'rotate-0'
+                }`} />
               </div>
               
-              <p className="text-white/90 leading-relaxed">
-                {selectedExercise.category === 'story' && "Close your eyes and let your imagination carry you to a peaceful place..."}
-                {selectedExercise.category === 'breathing' && "Focus on your breath. Inhale for 4, hold for 7, exhale for 8..."}
-                {selectedExercise.category === 'relaxation' && "Starting from the top of your head, notice any tension and let it melt away..."}
-                {selectedExercise.category === 'routine' && "Let's prepare your mind and body for restful sleep..."}
-                {selectedExercise.category === 'meditation' && "Bring to mind three things you're grateful for today..."}
-              </p>
+              <div className="min-h-[120px] flex items-center justify-center">
+                <p className="text-white/90 leading-relaxed text-lg font-medium">
+                  {getCurrentStepContent()}
+                </p>
+              </div>
+
+              {/* Step Indicator */}
+              <div className="flex justify-center space-x-2 mt-4">
+                {getStepsForExercise(selectedExercise.category).map((_, index) => (
+                  <div
+                    key={index}
+                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                      index === currentStep ? 'bg-white' : 'bg-white/30'
+                    }`}
+                  />
+                ))}
+              </div>
             </div>
           </div>
 
           <div className="flex justify-center space-x-4">
             <Button
-              onClick={() => setIsPlaying(!isPlaying)}
-              className="bg-white/20 hover:bg-white/30 text-white border-white/30 px-8 py-4 rounded-2xl backdrop-blur-sm"
+              onClick={togglePlayPause}
+              disabled={currentTime >= totalTime}
+              className={`px-8 py-4 rounded-2xl backdrop-blur-sm transition-all duration-200 ${
+                currentTime >= totalTime 
+                  ? 'bg-white/10 text-white/50 cursor-not-allowed' 
+                  : 'bg-white/20 hover:bg-white/30 text-white border-white/30'
+              }`}
               data-testid="button-play-pause-sleep"
             >
-              {isPlaying ? (
+              {currentTime >= totalTime ? (
+                <>
+                  <Moon className="w-5 h-5 mr-2" />
+                  {t('language') === 'ar' ? 'انتهى' : 'Finished'}
+                </>
+              ) : isPlaying ? (
                 <>
                   <Pause className="w-5 h-5 mr-2" />
                   {t('pause')}
@@ -157,7 +313,7 @@ export default function Sleep() {
             </Button>
             
             <Button
-              onClick={() => setCurrentTime(0)}
+              onClick={restartExercise}
               variant="outline"
               className="border-white/30 text-white hover:bg-white/10 px-6 py-4 rounded-2xl backdrop-blur-sm"
               data-testid="button-restart-sleep"
@@ -231,7 +387,7 @@ export default function Sleep() {
           {getFilteredExercises().map((exercise) => (
             <button
               key={exercise.id}
-              onClick={() => setSelectedExercise(exercise)}
+              onClick={() => startExercise(exercise)}
               className="w-full text-left bg-card border border-border rounded-2xl p-4 hover:bg-muted transition-all duration-200"
               data-testid={`sleep-exercise-${exercise.id}`}
             >
