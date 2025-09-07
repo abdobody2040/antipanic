@@ -190,12 +190,12 @@ export default function Checklist() {
         <div className="mt-8 space-y-3">
           <Link href="/exercises">
             <Button className="w-full bg-calm-blue hover:bg-blue-300 text-primary-foreground" data-testid="button-start-exercises">
-              Start Today's Exercises
+              {t('startTodaysExercises')}
             </Button>
           </Link>
           <Link href="/journal">
             <Button variant="outline" className="w-full" data-testid="button-add-journal">
-              Add Journal Entry
+              {t('addJournalEntry')}
             </Button>
           </Link>
         </div>

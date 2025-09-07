@@ -87,10 +87,10 @@ export default function MoodTracker() {
             {getEmotionByKey(selectedEmotion!)?.emoji}
           </div>
           <h2 className="text-2xl font-semibold text-green-800 mb-2">
-            Mood Recorded!
+            {t('moodRecorded')}
           </h2>
           <p className="text-green-600">
-            Thank you for sharing how you feel today
+            {t('thankYouSharing')}
           </p>
         </div>
       </div>
@@ -150,7 +150,7 @@ export default function MoodTracker() {
                 className="bg-calm-blue hover:bg-blue-300 text-primary-foreground px-8 py-3"
                 data-testid="button-save-mood"
               >
-                Record Mood
+                {t('recordMood')}
               </Button>
             </div>
           )}
@@ -162,7 +162,7 @@ export default function MoodTracker() {
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-foreground flex items-center">
                 <TrendingUp className="w-5 h-5 text-calm-blue mr-2" />
-                Recent Mood Entries
+                {t('recentMoodEntries')}
               </h3>
               <BarChart3 className="w-5 h-5 text-muted-foreground" />
             </div>
@@ -195,7 +195,7 @@ export default function MoodTracker() {
             {recentEntries.length > 5 && (
               <div className="text-center mt-4">
                 <Button variant="outline" size="sm">
-                  View All Entries ({recentEntries.length})
+                  {t('viewAllEntries')} ({recentEntries.length})
                 </Button>
               </div>
             )}
@@ -205,7 +205,7 @@ export default function MoodTracker() {
         {/* Mood Insights */}
         <div className="mt-6 bg-card border border-border rounded-2xl p-6" data-testid="mood-insights">
           <h3 className="text-lg font-semibold text-foreground mb-4">
-            Mood Insights
+            {t('moodInsights')}
           </h3>
           <div className="grid grid-cols-2 gap-4">
             <div className="text-center">
@@ -213,7 +213,7 @@ export default function MoodTracker() {
                 {recentEntries.length}
               </div>
               <div className="text-sm text-muted-foreground">
-                Total Entries
+                {t('totalEntries')}
               </div>
             </div>
             <div className="text-center">
@@ -221,15 +221,14 @@ export default function MoodTracker() {
                 7
               </div>
               <div className="text-sm text-muted-foreground">
-                Day Streak
+                {t('dayStreak')}
               </div>
             </div>
           </div>
           
           <div className="mt-4 p-3 bg-blue-50 rounded-xl">
             <p className="text-sm text-blue-700">
-              💡 <strong>Tip:</strong> Regular mood tracking helps identify patterns and triggers. 
-              Keep logging daily for better insights!
+              💡 <strong>{t('tip')}:</strong> {t('moodTrackingHelps')}
             </p>
           </div>
         </div>

@@ -188,13 +188,13 @@ export default function Affirm() {
   ];
 
   const categories = [
-    { id: 'all', name: t('language') === 'ar' ? 'جميع الفئات' : 'All Categories', count: affirmations.length },
+    { id: 'all', name: t('allCategories'), count: affirmations.length },
     { id: 'self-love', name: t('selfLove'), count: affirmations.filter(a => a.category === 'self-love').length },
     { id: 'confidence', name: t('confidence'), count: affirmations.filter(a => a.category === 'confidence').length },
     { id: 'resilience', name: t('resilience'), count: affirmations.filter(a => a.category === 'resilience').length },
     { id: 'gratitude', name: t('gratitude'), count: affirmations.filter(a => a.category === 'gratitude').length },
-    { id: 'peace', name: t('language') === 'ar' ? 'السلام الداخلي' : 'Inner Peace', count: affirmations.filter(a => a.category === 'peace').length },
-    { id: 'growth', name: t('language') === 'ar' ? 'النمو' : 'Growth', count: affirmations.filter(a => a.category === 'growth').length },
+    { id: 'peace', name: t('innerPeace'), count: affirmations.filter(a => a.category === 'peace').length },
+    { id: 'growth', name: t('growth'), count: affirmations.filter(a => a.category === 'growth').length },
   ];
 
   useEffect(() => {
@@ -254,12 +254,12 @@ export default function Affirm() {
                 {isPlaying ? (
                   <>
                     <Pause className="w-4 h-4 mr-2" />
-                    Pause
+                    {t('pause')}
                   </>
                 ) : (
                   <>
                     <Play className="w-4 h-4 mr-2" />
-                    Play
+                    {t('play')}
                   </>
                 )}
               </Button>
@@ -271,7 +271,7 @@ export default function Affirm() {
                 data-testid="button-shuffle"
               >
                 <Shuffle className="w-4 h-4 mr-2" />
-                New Affirmation
+                {t('newAffirmation')}
               </Button>
             </div>
           </div>
@@ -301,7 +301,7 @@ export default function Affirm() {
                   {category.name}
                 </div>
                 <div className="text-xs text-muted-foreground">
-                  {category.count} affirmations
+                  {category.count} {t('affirmationsCount')}
                 </div>
               </button>
             ))}
@@ -343,26 +343,26 @@ export default function Affirm() {
           <div className="flex items-center mb-4">
             <Heart className="w-5 h-5 text-pink-500 mr-2" />
             <h3 className="text-lg font-semibold text-foreground">
-              Daily Practice Tips
+              {t('dailyPracticeTips')}
             </h3>
           </div>
           
           <div className="space-y-3 text-sm text-muted-foreground">
             <div className="flex items-start space-x-2">
               <span className="text-pink-500 font-bold">•</span>
-              <p>Read affirmations aloud with conviction and belief</p>
+              <p>{t('readAffirmationsAloud')}</p>
             </div>
             <div className="flex items-start space-x-2">
               <span className="text-pink-500 font-bold">•</span>
-              <p>Practice for 5-10 minutes each morning</p>
+              <p>{t('practiceFor5to10Minutes')}</p>
             </div>
             <div className="flex items-start space-x-2">
               <span className="text-pink-500 font-bold">•</span>
-              <p>Choose affirmations that resonate with your current needs</p>
+              <p>{t('chooseResonatingAffirmations')}</p>
             </div>
             <div className="flex items-start space-x-2">
               <span className="text-pink-500 font-bold">•</span>
-              <p>Be patient - positive changes take time to manifest</p>
+              <p>{t('bePatientWithChanges')}</p>
             </div>
           </div>
         </div>

@@ -14,8 +14,8 @@ export default function Exercises() {
     // Quick Relief (0-3 mins)
     {
       id: 'emergency-calm',
-      title: t('language') === 'ar' ? 'هدوء الطوارئ' : 'Emergency Calm',
-      description: t('language') === 'ar' ? 'تقنية سريعة للهدوء الفوري في الأزمات' : 'Quick technique for instant calm in crisis',
+      title: t('emergencyCalm'),
+      description: t('quickTechniqueCalm'),
       duration: '1 ' + t('minutes'),
       icon: Zap,
       color: 'bg-red-500',
@@ -56,8 +56,8 @@ export default function Exercises() {
     },
     {
       id: 'triangular-breathing',
-      title: t('language') === 'ar' ? 'التنفس المثلثي' : 'Triangular Breathing',
-      description: t('language') === 'ar' ? 'استنشق، احبس، ازفر بإيقاع متوازن' : 'Inhale, hold, exhale in balanced rhythm',
+      title: t('triangularBreathing'),
+      description: t('inhaleHoldExhale'),
       duration: '6 ' + t('minutes'),
       icon: Wind,
       color: 'bg-cyan-500',
@@ -66,8 +66,8 @@ export default function Exercises() {
     },
     {
       id: 'belly-breathing',
-      title: t('language') === 'ar' ? 'التنفس البطني' : 'Belly Breathing',
-      description: t('language') === 'ar' ? 'تنفس عميق من البطن للاسترخاء التام' : 'Deep abdominal breathing for complete relaxation',
+      title: t('bellyBreathing'),
+      description: t('deepAbdominalBreathing'),
       duration: '7 ' + t('minutes'),
       icon: Wind,
       color: 'bg-sky-500',
@@ -88,8 +88,8 @@ export default function Exercises() {
     },
     {
       id: 'mindful-walking',
-      title: t('language') === 'ar' ? 'المشي الواعي' : 'Mindful Walking',
-      description: t('language') === 'ar' ? 'امشي بوعي واحضور كامل للحظة' : 'Walk with full awareness and presence',
+      title: t('mindfulWalking'),
+      description: t('walkWithAwareness'),
       duration: '8 ' + t('minutes'),
       icon: Compass,
       color: 'bg-green-600',
@@ -98,8 +98,8 @@ export default function Exercises() {
     },
     {
       id: 'five-senses',
-      title: t('language') === 'ar' ? 'تمرين الحواس الخمس' : 'Five Senses Exercise',
-      description: t('language') === 'ar' ? 'اربط مع محيطك من خلال حواسك الخمس' : 'Connect with surroundings through your five senses',
+      title: t('fiveSensesExercise'),
+      description: t('connectSurroundings'),
       duration: '6 ' + t('minutes'),
       icon: Eye,
       color: 'bg-lime-500',
@@ -108,8 +108,8 @@ export default function Exercises() {
     },
     {
       id: 'present-moment',
-      title: t('language') === 'ar' ? 'تأمل اللحظة الحاضرة' : 'Present Moment Meditation',
-      description: t('language') === 'ar' ? 'ركز على الآن واترك الماضي والمستقبل' : 'Focus on now, let go of past and future',
+      title: t('presentMomentMeditation'),
+      description: t('focusNowLetGo'),
       duration: '10 ' + t('minutes'),
       icon: Brain,
       color: 'bg-emerald-500',

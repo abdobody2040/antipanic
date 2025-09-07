@@ -17,7 +17,7 @@ export default function Home() {
             {t('appTitle')}
           </h1>
           <p className="text-muted-foreground mt-2">
-            Journey With Your Blue Friend
+            {t('journeyWithFriend')}
           </p>
         </div>
       </header>
@@ -33,7 +33,7 @@ export default function Home() {
                   <Target className="w-6 h-6 text-green-600" />
                   <div>
                     <h3 className="font-semibold text-green-800">{t('checklist')}</h3>
-                    <p className="text-xs text-green-600">Track daily goals</p>
+                    <p className="text-xs text-green-600">{t('trackDailyGoals')}</p>
                   </div>
                 </div>
               </button>
@@ -44,7 +44,7 @@ export default function Home() {
                   <BarChart3 className="w-6 h-6 text-blue-600" />
                   <div>
                     <h3 className="font-semibold text-blue-800">{t('moodTracker')}</h3>
-                    <p className="text-xs text-blue-600">How do you feel?</p>
+                    <p className="text-xs text-blue-600">{t('howDoYouFeel')}</p>
                   </div>
                 </div>
               </button>
@@ -66,7 +66,7 @@ export default function Home() {
                     {t('learn')}
                   </h3>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Understanding anxiety
+                    {t('understandingAnxiety')}
                   </p>
                 </div>
               </div>
@@ -104,7 +104,7 @@ export default function Home() {
                     {t('affirm')}
                   </h3>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Positive affirmations
+                    {t('positiveAffirmations')}
                   </p>
                 </div>
               </div>
@@ -123,7 +123,7 @@ export default function Home() {
                     {t('journal')}
                   </h3>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Track your journey
+                    {t('trackYourJourney')}
                   </p>
                 </div>
               </div>
@@ -145,7 +145,7 @@ export default function Home() {
                     {t('sleep')}
                   </h3>
                   <p className="text-xs text-muted-foreground">
-                    Sleep better
+                    {t('sleepBetter')}
                   </p>
                 </div>
               </div>
@@ -164,7 +164,7 @@ export default function Home() {
                     {t('settings')}
                   </h3>
                   <p className="text-xs text-muted-foreground">
-                    Preferences
+                    {t('preferences')}
                   </p>
                 </div>
               </div>
@@ -195,10 +195,10 @@ export default function Home() {
         <div className="mt-8 bg-gradient-to-r from-teal-50 to-blue-50 border border-teal-200 rounded-2xl p-6 text-center" data-testid="daily-encouragement">
           <div className="text-3xl mb-3">🫧</div>
           <h3 className="text-lg font-semibold text-teal-800 mb-2">
-            You're doing great!
+            {t('youreDoingGreat')}
           </h3>
           <p className="text-teal-600 text-sm">
-            Remember to be kind to yourself today. Every small step counts.
+            {t('beKindToYourself')}
           </p>
         </div>
       </main>

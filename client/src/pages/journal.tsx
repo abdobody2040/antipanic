@@ -55,10 +55,10 @@ export default function Journal() {
         {entries.length === 0 ? (
           <div className="text-center py-12">
             <div className="text-muted-foreground text-lg mb-2">
-              No entries yet
+              {t('noEntriesYet')}
             </div>
             <p className="text-sm text-muted-foreground">
-              Start tracking your episodes to identify patterns
+              {t('startTrackingEpisodes')}
             </p>
           </div>
         ) : (

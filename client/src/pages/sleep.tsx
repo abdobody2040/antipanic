@@ -24,7 +24,7 @@ export default function Sleep() {
     {
       id: 'bedtime-routine',
       title: t('bedtimeRoutine'),
-      description: 'Calming routine to prepare for sleep',
+      description: t('calmingRoutine'),
       duration: '10 mins',
       category: 'routine',
       icon: '🛏️',
@@ -32,8 +32,8 @@ export default function Sleep() {
     },
     {
       id: 'sleep-story-forest',
-      title: 'Forest Dreams',
-      description: 'A peaceful journey through moonlit woods',
+      title: t('forestDreams'),
+      description: t('peacefulJourneyWoods'),
       duration: '20 mins',
       category: 'story',
       icon: '🌲',
@@ -41,8 +41,8 @@ export default function Sleep() {
     },
     {
       id: 'sleep-story-ocean',
-      title: 'Ocean Waves',
-      description: 'Drift away with gentle ocean sounds',
+      title: t('oceanWaves'),
+      description: t('driftAwayOcean'),
       duration: '15 mins',
       category: 'story',
       icon: '🌊',
@@ -50,8 +50,8 @@ export default function Sleep() {
     },
     {
       id: 'progressive-relaxation',
-      title: 'Body Scan for Sleep',
-      description: 'Release tension from head to toe',
+      title: t('bodyScanSleep'),
+      description: t('releaseTensionHeadToe'),
       duration: '12 mins',
       category: 'relaxation',
       icon: '😴',
@@ -59,8 +59,8 @@ export default function Sleep() {
     },
     {
       id: 'breathing-sleep',
-      title: '4-7-8 Sleep Breathing',
-      description: 'Breathing technique for faster sleep onset',
+      title: t('sleepBreathing478'),
+      description: t('breathingFasterSleep'),
       duration: '8 mins',
       category: 'breathing',
       icon: '💨',
@@ -68,8 +68,8 @@ export default function Sleep() {
     },
     {
       id: 'gratitude-meditation',
-      title: 'Gratitude Before Sleep',
-      description: 'End your day with thankfulness',
+      title: t('gratitudeBeforeSleep'),
+      description: t('endDayThankfulness'),
       duration: '6 mins',
       category: 'meditation',
       icon: '🙏',
@@ -78,12 +78,12 @@ export default function Sleep() {
   ];
 
   const categories = [
-    { id: 'all', name: 'All', icon: '🌙' },
+    { id: 'all', name: t('all'), icon: '🌙' },
     { id: 'story', name: t('sleepStories'), icon: '📖' },
     { id: 'routine', name: t('bedtimeRoutine'), icon: '🛏️' },
-    { id: 'relaxation', name: 'Relaxation', icon: '😌' },
-    { id: 'breathing', name: 'Breathing', icon: '💨' },
-    { id: 'meditation', name: 'Meditation', icon: '🧘' }
+    { id: 'relaxation', name: t('relaxation'), icon: '😌' },
+    { id: 'breathing', name: t('breathing'), icon: '💨' },
+    { id: 'meditation', name: t('meditation'), icon: '🧘' }
   ];
 
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -146,12 +146,12 @@ export default function Sleep() {
               {isPlaying ? (
                 <>
                   <Pause className="w-5 h-5 mr-2" />
-                  Pause
+                  {t('pause')}
                 </>
               ) : (
                 <>
                   <Play className="w-5 h-5 mr-2" />
-                  Play
+                  {t('play')}
                 </>
               )}
             </Button>
@@ -176,7 +176,7 @@ export default function Sleep() {
 
           <div className="mt-8 text-center">
             <p className="text-white/60 text-sm">
-              💡 Find a comfortable position and let yourself relax completely
+              💡 {t('findComfortablePosition')}
             </p>
           </div>
         </div>
@@ -265,28 +265,28 @@ export default function Sleep() {
         <div className="mt-8 bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200 rounded-2xl p-6" data-testid="sleep-tips">
           <h3 className="text-lg font-semibold text-indigo-800 mb-4 flex items-center">
             <Moon className="w-5 h-5 mr-2" />
-            Better Sleep Tips
+            {t('betterSleepTips')}
           </h3>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
             <div className="space-y-2">
               <div className="flex items-center space-x-2">
                 <span className="text-indigo-500">🛏️</span>
-                <span className="text-indigo-700">Keep a consistent sleep schedule</span>
+                <span className="text-indigo-700">{t('keepConsistentSchedule')}</span>
               </div>
               <div className="flex items-center space-x-2">
                 <span className="text-indigo-500">📱</span>
-                <span className="text-indigo-700">Avoid screens 1 hour before bed</span>
+                <span className="text-indigo-700">{t('avoidScreensBeforeBed')}</span>
               </div>
             </div>
             <div className="space-y-2">
               <div className="flex items-center space-x-2">
                 <span className="text-indigo-500">🌡️</span>
-                <span className="text-indigo-700">Keep your room cool and dark</span>
+                <span className="text-indigo-700">{t('keepRoomCoolDark')}</span>
               </div>
               <div className="flex items-center space-x-2">
                 <span className="text-indigo-500">☕</span>
-                <span className="text-indigo-700">Limit caffeine after 2 PM</span>
+                <span className="text-indigo-700">{t('limitCaffeineAfter2PM')}</span>
               </div>
             </div>
           </div>
