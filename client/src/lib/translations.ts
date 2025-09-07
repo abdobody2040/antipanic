@@ -183,6 +183,24 @@ export const translations = {
     appVersion: 'Version 1.0.0',
     madeWithCare: 'Made with care for mental wellness',
     
+    // Learning specific
+    keyPoints: 'Key Points',
+    remember: 'Remember',
+    learningProgress: 'Learning Progress',
+    complete: 'Complete',
+    learningTips: 'Learning Tips',
+    markAsComplete: 'Mark as Complete',
+    lessonComplete: 'Lesson Complete!',
+    takeyourTime: 'Take your time with each lesson',
+    practiceDaily: 'Practice what you learn in daily life',
+    revisitLessons: 'Revisit lessons when needed',
+    applyTechniques: 'Apply techniques during anxious moments',
+    understandingFirst: 'Understanding is the first step to managing anxiety',
+    everyoneExperiences: 'Everyone experiences anxiety differently',
+    professionalHelp: 'Professional help is available and effective',
+    recoveryPossible: 'Recovery is possible with the right support',
+    youreNotAlone: 'You\'re not alone in this journey. Take your time to understand and be patient with yourself as you learn and grow.',
+
     // Common
     back: 'Back',
     close: 'Close',
@@ -376,6 +394,24 @@ export const translations = {
     appVersion: 'الإصدار 1.0.0',
     madeWithCare: 'صُنع بعناية للصحة النفسية',
     
+    // Learning specific
+    keyPoints: 'النقاط الرئيسية',
+    remember: 'تذكر',
+    learningProgress: 'تقدم التعلم',
+    complete: 'مكتمل',
+    learningTips: 'نصائح التعلم',
+    markAsComplete: 'تحديد كمكتمل',
+    lessonComplete: 'اكتمل الدرس!',
+    takeyourTime: 'خذ وقتك مع كل درس',
+    practiceDaily: 'مارس ما تتعلمه في الحياة اليومية',
+    revisitLessons: 'راجع الدروس عند الحاجة',
+    applyTechniques: 'طبق التقنيات أثناء لحظات القلق',
+    understandingFirst: 'الفهم هو الخطوة الأولى لإدارة القلق',
+    everyoneExperiences: 'كل شخص يواجه القلق بطريقة مختلفة',
+    professionalHelp: 'المساعدة المهنية متاحة وفعالة',
+    recoveryPossible: 'التعافي ممكن مع الدعم المناسب',
+    youreNotAlone: 'أنت لست وحدك في هذه الرحلة. خذ وقتك للفهم واصبر على نفسك أثناء التعلم والنمو.',
+
     // Common
     back: 'رجوع',
     close: 'إغلاق',

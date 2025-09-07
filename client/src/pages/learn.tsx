@@ -174,23 +174,44 @@ export default function Learn() {
                 {lesson.title}
               </h2>
               <div className="text-muted-foreground space-y-4">
-                <p>{lesson.content}</p>
+                <p className="leading-relaxed">{lesson.content}</p>
                 
-                <div className="bg-blue-50 p-4 rounded-xl">
-                  <h3 className="font-medium text-blue-800 mb-2">Key Points:</h3>
-                  <ul className="text-blue-700 text-sm space-y-1">
-                    <li>• Understanding is the first step to managing anxiety</li>
-                    <li>• Everyone experiences anxiety differently</li>
-                    <li>• Professional help is available and effective</li>
-                    <li>• Recovery is possible with the right support</li>
+                <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 p-5 rounded-2xl border border-blue-200 dark:border-blue-700/50">
+                  <h3 className="font-semibold text-blue-800 dark:text-blue-200 mb-3 flex items-center">
+                    <span className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center mr-2">
+                      <span className="text-white text-xs">✓</span>
+                    </span>
+                    {t('keyPoints')}:
+                  </h3>
+                  <ul className="text-blue-700 dark:text-blue-300 text-sm space-y-2">
+                    <li className="flex items-start">
+                      <span className="w-2 h-2 bg-blue-500 rounded-full mr-3 mt-2 flex-shrink-0"></span>
+                      {t('understandingFirst')}
+                    </li>
+                    <li className="flex items-start">
+                      <span className="w-2 h-2 bg-blue-500 rounded-full mr-3 mt-2 flex-shrink-0"></span>
+                      {t('everyoneExperiences')}
+                    </li>
+                    <li className="flex items-start">
+                      <span className="w-2 h-2 bg-blue-500 rounded-full mr-3 mt-2 flex-shrink-0"></span>
+                      {t('professionalHelp')}
+                    </li>
+                    <li className="flex items-start">
+                      <span className="w-2 h-2 bg-blue-500 rounded-full mr-3 mt-2 flex-shrink-0"></span>
+                      {t('recoveryPossible')}
+                    </li>
                   </ul>
                 </div>
 
-                <div className="bg-green-50 p-4 rounded-xl">
-                  <h3 className="font-medium text-green-800 mb-2">Remember:</h3>
-                  <p className="text-green-700 text-sm">
-                    You're not alone in this journey. Take your time to understand 
-                    and be patient with yourself as you learn and grow.
+                <div className="bg-gradient-to-br from-green-50 to-emerald-100 dark:from-green-900/20 dark:to-emerald-800/20 p-5 rounded-2xl border border-green-200 dark:border-green-700/50">
+                  <h3 className="font-semibold text-green-800 dark:text-green-200 mb-3 flex items-center">
+                    <span className="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center mr-2">
+                      <span className="text-white text-xs">💚</span>
+                    </span>
+                    {t('remember')}:
+                  </h3>
+                  <p className="text-green-700 dark:text-green-300 text-sm leading-relaxed">
+                    {t('youreNotAlone')}
                   </p>
                 </div>
               </div>
@@ -201,18 +222,18 @@ export default function Learn() {
             {!lesson.completed && (
               <button
                 onClick={() => markAsCompleted(lesson.id)}
-                className="bg-calm-blue hover:bg-blue-300 text-primary-foreground px-6 py-3 rounded-2xl font-medium"
+                className="bg-gradient-to-r from-calm-blue to-blue-400 hover:from-blue-300 hover:to-blue-500 text-white px-8 py-4 rounded-2xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
                 data-testid="button-mark-complete"
               >
-                <CheckCircle className="w-4 h-4 mr-2 inline" />
-                Mark as Complete
+                <CheckCircle className="w-5 h-5 mr-2 inline" />
+                {t('markAsComplete')}
               </button>
             )}
             
             {lesson.completed && (
-              <div className="flex items-center justify-center text-green-600">
-                <CheckCircle className="w-5 h-5 mr-2" />
-                <span className="font-medium">Lesson Complete!</span>
+              <div className="flex items-center justify-center text-green-600 bg-green-50 dark:bg-green-900/20 px-6 py-3 rounded-2xl border border-green-200 dark:border-green-700">
+                <CheckCircle className="w-6 h-6 mr-3 animate-pulse" />
+                <span className="font-semibold text-lg">{t('lessonComplete')}</span>
               </div>
             )}
           </div>
@@ -240,24 +261,31 @@ export default function Learn() {
 
       <main className="px-6 py-6">
         {/* Progress Overview */}
-        <div className="bg-card border border-border rounded-2xl p-6 mb-6" data-testid="learning-progress">
+        <div className="bg-gradient-to-br from-card to-card/80 border border-border rounded-3xl p-6 mb-6 shadow-lg" data-testid="learning-progress">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-foreground">
-              Learning Progress
+            <h3 className="text-xl font-bold text-foreground flex items-center">
+              <span className="w-8 h-8 bg-gradient-to-br from-calm-blue to-blue-600 rounded-full flex items-center justify-center mr-3">
+                <BookOpen className="w-4 h-4 text-white" />
+              </span>
+              {t('learningProgress')}
             </h3>
-            <span className="text-calm-blue font-semibold">
-              {completedLessons.size}/{lessons.length}
-            </span>
+            <div className="bg-calm-blue/10 px-4 py-2 rounded-full">
+              <span className="text-calm-blue font-bold text-lg">
+                {completedLessons.size}/{lessons.length}
+              </span>
+            </div>
           </div>
           
-          <div className="w-full bg-muted rounded-full h-3 mb-2">
+          <div className="w-full bg-muted rounded-full h-4 mb-3 overflow-hidden shadow-inner">
             <div 
-              className="bg-calm-blue h-3 rounded-full transition-all duration-500"
+              className="bg-gradient-to-r from-calm-blue to-blue-400 h-4 rounded-full transition-all duration-700 ease-out relative overflow-hidden"
               style={{ width: `${getCompletionPercentage()}%` }}
-            ></div>
+            >
+              <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
+            </div>
           </div>
-          <p className="text-sm text-muted-foreground text-center">
-            {getCompletionPercentage()}% Complete
+          <p className="text-sm text-muted-foreground text-center font-medium">
+            {getCompletionPercentage()}% {t('complete')}
           </p>
         </div>
 
@@ -274,29 +302,31 @@ export default function Learn() {
               <button
                 key={lesson.id}
                 onClick={() => setSelectedLesson(lesson.id)}
-                className="w-full text-left bg-card border border-border rounded-2xl p-4 hover:bg-muted transition-all duration-200"
+                className="w-full text-left bg-card border border-border rounded-2xl p-5 hover:bg-muted hover:shadow-lg hover:scale-[1.02] transition-all duration-300 group"
                 data-testid={`lesson-${lesson.id}`}
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4 rtl:space-x-reverse">
-                    <div className={`w-12 h-12 ${lesson.color} rounded-full flex items-center justify-center`}>
-                      <IconComponent className="w-6 h-6 text-white" />
+                    <div className={`w-14 h-14 ${lesson.color} rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-200`}>
+                      <IconComponent className="w-7 h-7 text-white" />
                     </div>
                     <div>
-                      <h4 className="font-semibold text-foreground">
+                      <h4 className="font-bold text-foreground text-lg group-hover:text-calm-blue transition-colors duration-200">
                         {lesson.title}
                       </h4>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-sm text-muted-foreground leading-relaxed mt-1">
                         {lesson.description}
                       </p>
                     </div>
                   </div>
                   
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-3">
                     {lesson.completed && (
-                      <CheckCircle className="w-5 h-5 text-green-500" />
+                      <div className="bg-green-100 dark:bg-green-900/20 rounded-full p-1">
+                        <CheckCircle className="w-6 h-6 text-green-500 animate-pulse" />
+                      </div>
                     )}
-                    <ArrowRight className="w-5 h-5 text-muted-foreground" />
+                    <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:text-calm-blue group-hover:translate-x-1 transition-all duration-200" />
                   </div>
                 </div>
               </button>
@@ -305,13 +335,28 @@ export default function Learn() {
         </div>
 
         {/* Learning Tips */}
-        <div className="mt-8 bg-calm-blue rounded-2xl p-6 text-primary-foreground" data-testid="learning-tips">
-          <h3 className="text-lg font-semibold mb-3">💡 Learning Tips</h3>
-          <ul className="space-y-2 text-sm">
-            <li>• Take your time with each lesson</li>
-            <li>• Practice what you learn in daily life</li>
-            <li>• Revisit lessons when needed</li>
-            <li>• Apply techniques during anxious moments</li>
+        <div className="mt-8 bg-gradient-to-br from-calm-blue via-blue-500 to-indigo-600 rounded-3xl p-6 text-white shadow-2xl" data-testid="learning-tips">
+          <h3 className="text-xl font-bold mb-4 flex items-center">
+            <span className="text-2xl mr-3 animate-bounce">💡</span>
+            {t('learningTips')}
+          </h3>
+          <ul className="space-y-3 text-sm">
+            <li className="flex items-start transform hover:translate-x-1 transition-transform duration-200">
+              <span className="w-2 h-2 bg-white rounded-full mr-4 mt-2 flex-shrink-0"></span>
+              {t('takeyourTime')}
+            </li>
+            <li className="flex items-start transform hover:translate-x-1 transition-transform duration-200">
+              <span className="w-2 h-2 bg-white rounded-full mr-4 mt-2 flex-shrink-0"></span>
+              {t('practiceDaily')}
+            </li>
+            <li className="flex items-start transform hover:translate-x-1 transition-transform duration-200">
+              <span className="w-2 h-2 bg-white rounded-full mr-4 mt-2 flex-shrink-0"></span>
+              {t('revisitLessons')}
+            </li>
+            <li className="flex items-start transform hover:translate-x-1 transition-transform duration-200">
+              <span className="w-2 h-2 bg-white rounded-full mr-4 mt-2 flex-shrink-0"></span>
+              {t('applyTechniques')}
+            </li>
           </ul>
         </div>
       </main>
