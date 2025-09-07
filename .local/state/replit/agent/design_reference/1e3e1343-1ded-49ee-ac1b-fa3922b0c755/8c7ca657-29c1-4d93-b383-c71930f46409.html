@@ -1,0 +1,794 @@
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calm Mind - Anxiety Support App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                borderRadius: {
+                    lg: "var(--radius)",
+                    md: "calc(var(--radius) - 2px)",
+                    sm: "calc(var(--radius) - 4px)",
+                },
+                colors: {
+                    background: "var(--background)",
+                    foreground: "var(--foreground)",
+                    card: {
+                        DEFAULT: "var(--card)",
+                        foreground: "var(--card-foreground)",
+                    },
+                    primary: {
+                        DEFAULT: "var(--primary)",
+                        foreground: "var(--primary-foreground)",
+                    },
+                    secondary: {
+                        DEFAULT: "var(--secondary)",
+                        foreground: "var(--secondary-foreground)",
+                    },
+                    muted: {
+                        DEFAULT: "var(--muted)",
+                        foreground: "var(--muted-foreground)",
+                    },
+                    accent: {
+                        DEFAULT: "var(--accent)",
+                        foreground: "var(--accent-foreground)",
+                    },
+                    border: "var(--border)",
+                    ring: "var(--ring)",
+                },
+                fontFamily: {
+                    sans: ["var(--font-sans)"],
+                }
+            },
+        }
+    };
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --background: hsl(0 0% 100%);
+            --foreground: hsl(215 16% 18%);
+            --card: hsl(0 0% 100%);
+            --card-foreground: hsl(215 16% 18%);
+            --primary: hsl(214 42% 82%); /* #A7C7E7 light blue */
+            --primary-foreground: hsl(215 16% 18%);
+            --secondary: hsl(275 27% 80%); /* #CDB4DB light purple */
+            --secondary-foreground: hsl(215 16% 18%);
+            --muted: hsl(220 14% 96%);
+            --muted-foreground: hsl(215 16% 47%);
+            --accent: hsl(142 52% 70%); /* gentle green */
+            --accent-foreground: hsl(215 16% 18%);
+            --border: hsl(220 13% 91%);
+            --ring: hsl(214 42% 82%);
+            --radius: 12px;
+            --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+        }
+
+        .breathing-circle {
+            animation: breathe 10s ease-in-out infinite;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            25% { transform: scale(1.2); opacity: 1; } /* inhale */
+            50% { transform: scale(1.2); opacity: 1; } /* hold */
+            75% { transform: scale(0.8); opacity: 0.5; } /* exhale */
+        }
+
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .rtl { direction: rtl; }
+        .rtl .text-right { text-align: left; }
+        .rtl .text-left { text-align: right; }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, hsl(214 42% 92%) 0%, hsl(275 27% 90%) 100%);
+        }
+    </style>
+</head>
+<body class="font-sans bg-background text-foreground" dir="ltr">
+    <!-- @COMPONENT: App Container -->
+    <div class="min-h-screen max-w-md mx-auto bg-white shadow-xl relative overflow-hidden">
+        
+        <!-- Home Screen -->
+        <div id="home-screen" class="screen active">
+            <!-- @COMPONENT: Header -->
+            <header class="gradient-bg px-6 pt-12 pb-8 text-center">
+                <div class="mb-4">
+                    <i class="fas fa-heart text-4xl text-primary mb-3"></i>
+                    <h1 class="text-2xl font-semibold text-foreground" data-bind="app.title">
+                        <span class="en">Calm Mind</span>
+                        <span class="ar hidden">عقل هادئ</span>
+                    </h1>
+                    <p class="text-muted-foreground mt-2" data-bind="app.subtitle">
+                        <span class="en">Your pocket companion for peace</span>
+                        <span class="ar hidden">رفيقك للحصول على الهدوء</span>
+                    </p>
+                </div>
+            </header>
+
+            <!-- @COMPONENT: Main Navigation Cards -->
+            <main class="px-6 py-6 space-y-4">
+                <!-- SOS Emergency Card -->
+                <button onclick="showScreen('sos-screen')" class="w-full bg-red-50 border-2 border-red-200 rounded-2xl p-6 text-left hover:bg-red-100 transition-all duration-200 transform hover:scale-105 active:scale-95">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center">
+                            <i class="fas fa-exclamation text-2xl text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-red-700 mb-1">
+                                <span class="en">Emergency SOS</span>
+                                <span class="ar hidden">طوارئ</span>
+                            </h3>
+                            <p class="text-red-600 text-sm">
+                                <span class="en">Immediate help for panic attacks</span>
+                                <span class="ar hidden">مساعدة فورية لنوبات الهلع</span>
+                            </p>
+                        </div>
+                    </div>
+                </button>
+
+                <!-- Exercises Card -->
+                <button onclick="showScreen('exercises-screen')" class="w-full bg-card border border-border rounded-2xl p-6 text-left hover:bg-muted transition-all duration-200 transform hover:scale-105 active:scale-95">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center">
+                            <i class="fas fa-leaf text-2xl text-primary-foreground"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-foreground mb-1">
+                                <span class="en">Exercises</span>
+                                <span class="ar hidden">التمارين</span>
+                            </h3>
+                            <p class="text-muted-foreground text-sm">
+                                <span class="en">Breathing, relaxation & mindfulness</span>
+                                <span class="ar hidden">تنفس، استرخاء ووعي ذهني</span>
+                            </p>
+                        </div>
+                    </div>
+                </button>
+
+                <!-- Journal Card -->
+                <button onclick="showScreen('journal-screen')" class="w-full bg-card border border-border rounded-2xl p-6 text-left hover:bg-muted transition-all duration-200 transform hover:scale-105 active:scale-95">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-16 h-16 bg-secondary rounded-full flex items-center justify-center">
+                            <i class="fas fa-book-open text-2xl text-secondary-foreground"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-foreground mb-1">
+                                <span class="en">Journal</span>
+                                <span class="ar hidden">المذكرات</span>
+                            </h3>
+                            <p class="text-muted-foreground text-sm">
+                                <span class="en">Track episodes & triggers</span>
+                                <span class="ar hidden">تتبع النوبات والمحفزات</span>
+                            </p>
+                        </div>
+                    </div>
+                </button>
+
+                <!-- Settings Card -->
+                <button onclick="showScreen('settings-screen')" class="w-full bg-card border border-border rounded-2xl p-6 text-left hover:bg-muted transition-all duration-200 transform hover:scale-105 active:scale-95">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-16 h-16 bg-muted rounded-full flex items-center justify-center">
+                            <i class="fas fa-cog text-2xl text-muted-foreground"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-foreground mb-1">
+                                <span class="en">Settings</span>
+                                <span class="ar hidden">الإعدادات</span>
+                            </h3>
+                            <p class="text-muted-foreground text-sm">
+                                <span class="en">Language & preferences</span>
+                                <span class="ar hidden">اللغة والتفضيلات</span>
+                            </p>
+                        </div>
+                    </div>
+                </button>
+            </main>
+        </div>
+
+        <!-- SOS Emergency Screen -->
+        <div id="sos-screen" class="screen hidden">
+            <!-- @COMPONENT: Emergency Header -->
+            <header class="bg-red-500 px-6 pt-12 pb-8 text-center text-white">
+                <button onclick="showScreen('home-screen')" class="absolute top-12 left-6 text-white">
+                    <i class="fas fa-arrow-left text-xl"></i>
+                </button>
+                <div class="mb-4">
+                    <i class="fas fa-heart text-3xl mb-3"></i>
+                    <h1 class="text-xl font-medium">
+                        <span class="en">Emergency Support</span>
+                        <span class="ar hidden">دعم الطوارئ</span>
+                    </h1>
+                </div>
+            </header>
+
+            <!-- @COMPONENT: SOS Content -->
+            <main class="px-6 py-8 space-y-8">
+                <!-- Reassurance Message -->
+                <div class="text-center bg-green-50 border border-green-200 rounded-2xl p-6">
+                    <i class="fas fa-shield-alt text-3xl text-green-600 mb-4"></i>
+                    <h2 class="text-xl font-semibold text-green-800 mb-3">
+                        <span class="en">You are safe</span>
+                        <span class="ar hidden">أنت في مكان آمن</span>
+                    </h2>
+                    <p class="text-green-700 leading-relaxed">
+                        <span class="en">You are safe. We will calm down step by step.</span>
+                        <span class="ar hidden">أنت في مكان آمن. سنهدأ خطوة بخطوة.</span>
+                    </p>
+                </div>
+
+                <!-- Breathing Exercise -->
+                <div class="text-center bg-blue-50 border border-blue-200 rounded-2xl p-8" id="breathing-section">
+                    <h3 class="text-lg font-semibold text-blue-800 mb-6">
+                        <span class="en">Breathing Exercise</span>
+                        <span class="ar hidden">تمرين التنفس</span>
+                    </h3>
+                    
+                    <!-- Breathing Circle -->
+                    <div class="relative mb-8">
+                        <div class="breathing-circle w-32 h-32 bg-primary rounded-full mx-auto flex items-center justify-center border-4 border-blue-300">
+                            <span class="text-primary-foreground font-medium" id="breathing-text">
+                                <span class="en">Breathe</span>
+                                <span class="ar hidden">تنفس</span>
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="text-blue-700 space-y-2">
+                        <p class="text-sm">
+                            <span class="en">Follow the circle rhythm:</span>
+                            <span class="ar hidden">اتبع إيقاع الدائرة:</span>
+                        </p>
+                        <p class="text-xs">
+                            <span class="en">Inhale 1..2..3..4 — Hold 1..2..3..4 — Exhale 1..2..3..4..5..6</span>
+                            <span class="ar hidden">استنشق ببطء 1..2..3..4 — احبس 1..2..3..4 — ازفر 1..2..3..4..5..6</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Grounding Technique -->
+                <div class="bg-purple-50 border border-purple-200 rounded-2xl p-6">
+                    <h3 class="text-lg font-semibold text-purple-800 mb-4">
+                        <span class="en">5-4-3-2-1 Grounding</span>
+                        <span class="ar hidden">تمرين التأريض 5-4-3-2-1</span>
+                    </h3>
+                    <p class="text-purple-700 text-sm leading-relaxed">
+                        <span class="en">Name 5 things you see, 4 things you can touch, 3 things you hear, 2 things you smell, 1 thing you taste.</span>
+                        <span class="ar hidden">اذكر 5 أشياء تراها، 4 تلمسها، 3 تسمعها، 2 تشمها، 1 تتذوقها.</span>
+                    </p>
+                    
+                    <div class="grid grid-cols-5 gap-2 mt-4">
+                        <div class="text-center">
+                            <div class="w-8 h-8 bg-purple-200 rounded-full flex items-center justify-center mx-auto mb-1">
+                                <i class="fas fa-eye text-xs text-purple-700"></i>
+                            </div>
+                            <span class="text-xs text-purple-600">5</span>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-8 h-8 bg-purple-200 rounded-full flex items-center justify-center mx-auto mb-1">
+                                <i class="fas fa-hand-paper text-xs text-purple-700"></i>
+                            </div>
+                            <span class="text-xs text-purple-600">4</span>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-8 h-8 bg-purple-200 rounded-full flex items-center justify-center mx-auto mb-1">
+                                <i class="fas fa-volume-up text-xs text-purple-700"></i>
+                            </div>
+                            <span class="text-xs text-purple-600">3</span>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-8 h-8 bg-purple-200 rounded-full flex items-center justify-center mx-auto mb-1">
+                                <i class="fas fa-nose text-xs text-purple-700"></i>
+                            </div>
+                            <span class="text-xs text-purple-600">2</span>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-8 h-8 bg-purple-200 rounded-full flex items-center justify-center mx-auto mb-1">
+                                <i class="fas fa-smile text-xs text-purple-700"></i>
+                            </div>
+                            <span class="text-xs text-purple-600">1</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Completion Button -->
+                <div class="text-center pt-4">
+                    <button onclick="completeSOS()" class="w-full bg-accent hover:bg-green-400 text-accent-foreground font-medium py-4 px-6 rounded-2xl transition-colors duration-200">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        <span class="en">I'm okay now</span>
+                        <span class="ar hidden">أنا بخير الآن</span>
+                    </button>
+                </div>
+            </main>
+        </div>
+
+        <!-- Exercises Screen -->
+        <div id="exercises-screen" class="screen hidden">
+            <!-- @COMPONENT: Exercises Header -->
+            <header class="gradient-bg px-6 pt-12 pb-6">
+                <button onclick="showScreen('home-screen')" class="mb-4 text-foreground">
+                    <i class="fas fa-arrow-left text-xl"></i>
+                </button>
+                <h1 class="text-2xl font-semibold text-foreground">
+                    <span class="en">Exercises</span>
+                    <span class="ar hidden">التمارين</span>
+                </h1>
+                <p class="text-muted-foreground mt-2">
+                    <span class="en">Techniques to help you relax and center yourself</span>
+                    <span class="ar hidden">تقنيات لمساعدتك على الاسترخاء وتهدئة نفسك</span>
+                </p>
+            </header>
+
+            <!-- @COMPONENT: Exercise List -->
+            <main class="px-6 py-6 space-y-4">
+                <!-- @MAP: exercises.map(exercise => ( -->
+                <div class="bg-card border border-border rounded-2xl p-6 hover:bg-muted transition-colors">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+                            <i class="fas fa-lungs text-primary-foreground"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-foreground">
+                                <span class="en">Box Breathing</span>
+                                <span class="ar hidden">تنفس الصندوق</span>
+                            </h3>
+                            <p class="text-sm text-muted-foreground">
+                                <span class="en">4-4-4-4 breathing pattern</span>
+                                <span class="ar hidden">نمط التنفس 4-4-4-4</span>
+                            </p>
+                            <span class="text-xs text-primary font-medium">
+                                <span class="en">5 minutes</span>
+                                <span class="ar hidden">5 دقائق</span>
+                            </span>
+                        </div>
+                        <i class="fas fa-play text-muted-foreground"></i>
+                    </div>
+                </div>
+
+                <div class="bg-card border border-border rounded-2xl p-6 hover:bg-muted transition-colors">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 bg-secondary rounded-full flex items-center justify-center">
+                            <i class="fas fa-dumbbell text-secondary-foreground"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-foreground">
+                                <span class="en">Progressive Muscle Relaxation</span>
+                                <span class="ar hidden">استرخاء العضلات التدريجي</span>
+                            </h3>
+                            <p class="text-sm text-muted-foreground">
+                                <span class="en">Tension and release exercise</span>
+                                <span class="ar hidden">تمرين الشد والإرخاء</span>
+                            </p>
+                            <span class="text-xs text-secondary font-medium">
+                                <span class="en">10 minutes</span>
+                                <span class="ar hidden">10 دقائق</span>
+                            </span>
+                        </div>
+                        <i class="fas fa-play text-muted-foreground"></i>
+                    </div>
+                </div>
+
+                <div class="bg-card border border-border rounded-2xl p-6 hover:bg-muted transition-colors">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 bg-accent rounded-full flex items-center justify-center">
+                            <i class="fas fa-om text-accent-foreground"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-foreground">
+                                <span class="en">Mindfulness Meditation</span>
+                                <span class="ar hidden">تأمل الوعي الذهني</span>
+                            </h3>
+                            <p class="text-sm text-muted-foreground">
+                                <span class="en">Present moment awareness</span>
+                                <span class="ar hidden">الوعي باللحظة الحاضرة</span>
+                            </p>
+                            <span class="text-xs text-accent font-medium">
+                                <span class="en">15 minutes</span>
+                                <span class="ar hidden">15 دقيقة</span>
+                            </span>
+                        </div>
+                        <i class="fas fa-play text-muted-foreground"></i>
+                    </div>
+                </div>
+                <!-- @END_MAP )) -->
+            </main>
+        </div>
+
+        <!-- Journal Screen -->
+        <div id="journal-screen" class="screen hidden">
+            <!-- @COMPONENT: Journal Header -->
+            <header class="gradient-bg px-6 pt-12 pb-6">
+                <div class="flex justify-between items-start mb-4">
+                    <button onclick="showScreen('home-screen')" class="text-foreground">
+                        <i class="fas fa-arrow-left text-xl"></i>
+                    </button>
+                    <button onclick="showAddEntry()" class="bg-primary hover:bg-blue-300 text-primary-foreground px-4 py-2 rounded-xl text-sm font-medium transition-colors">
+                        <i class="fas fa-plus mr-1"></i>
+                        <span class="en">Add Entry</span>
+                        <span class="ar hidden">إضافة مذكرة</span>
+                    </button>
+                </div>
+                <h1 class="text-2xl font-semibold text-foreground">
+                    <span class="en">Journal</span>
+                    <span class="ar hidden">المذكرات</span>
+                </h1>
+                <p class="text-muted-foreground mt-2">
+                    <span class="en">Track your episodes and patterns</span>
+                    <span class="ar hidden">تتبع نوباتك والأنماط</span>
+                </p>
+            </header>
+
+            <!-- @COMPONENT: Journal Entries -->
+            <main class="px-6 py-6 space-y-4" id="journal-entries">
+                <!-- @MAP: journalEntries.map(entry => ( -->
+                <div class="bg-card border border-border rounded-2xl p-6" data-mock="true">
+                    <div class="flex justify-between items-start mb-3">
+                        <div class="text-sm text-muted-foreground">
+                            <span data-bind="entry.date">March 15, 2024</span> • 
+                            <span data-bind="entry.time">2:30 PM</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xs text-muted-foreground">
+                                <span class="en">Intensity:</span>
+                                <span class="ar hidden">الشدة:</span>
+                            </span>
+                            <div class="bg-orange-100 text-orange-700 px-2 py-1 rounded-lg text-xs font-medium" data-bind="entry.intensity">
+                                7/10
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3 class="font-medium text-foreground mb-2" data-bind="entry.trigger">
+                        <span class="en">Work presentation stress</span>
+                        <span class="ar hidden">ضغط عرض العمل</span>
+                    </h3>
+                    
+                    <p class="text-sm text-muted-foreground" data-bind="entry.notes">
+                        <span class="en">Felt overwhelmed before the big presentation. Heart racing, sweating.</span>
+                        <span class="ar hidden">شعرت بالإرهاق قبل العرض الكبير. نبضات قلب سريعة، تعرق.</span>
+                    </p>
+                </div>
+
+                <div class="bg-card border border-border rounded-2xl p-6" data-mock="true">
+                    <div class="flex justify-between items-start mb-3">
+                        <div class="text-sm text-muted-foreground">
+                            <span data-bind="entry.date">March 12, 2024</span> • 
+                            <span data-bind="entry.time">11:45 AM</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xs text-muted-foreground">
+                                <span class="en">Intensity:</span>
+                                <span class="ar hidden">الشدة:</span>
+                            </span>
+                            <div class="bg-red-100 text-red-700 px-2 py-1 rounded-lg text-xs font-medium" data-bind="entry.intensity">
+                                4/10
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3 class="font-medium text-foreground mb-2" data-bind="entry.trigger">
+                        <span class="en">Crowded subway</span>
+                        <span class="ar hidden">مترو مزدحم</span>
+                    </h3>
+                    
+                    <p class="text-sm text-muted-foreground" data-bind="entry.notes">
+                        <span class="en">Rush hour subway was very crowded. Used breathing exercise to calm down.</span>
+                        <span class="ar hidden">كان مترو ساعة الذروة مزدحماً جداً. استخدمت تمرين التنفس للهدوء.</span>
+                    </p>
+                </div>
+                <!-- @END_MAP )) -->
+            </main>
+
+            <!-- Add Entry Form (Hidden by default) -->
+            <div id="add-entry-form" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+                <div class="absolute bottom-0 inset-x-0 bg-white rounded-t-3xl p-6 max-h-96 overflow-y-auto">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-semibold text-foreground">
+                            <span class="en">New Entry</span>
+                            <span class="ar hidden">مذكرة جديدة</span>
+                        </h3>
+                        <button onclick="hideAddEntry()" class="text-muted-foreground">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-foreground mb-2">
+                                <span class="en">Intensity (0-10)</span>
+                                <span class="ar hidden">الشدة (0-10)</span>
+                            </label>
+                            <input type="range" min="0" max="10" value="5" class="w-full" id="intensity-slider">
+                            <div class="text-center mt-2">
+                                <span id="intensity-value" class="text-lg font-semibold text-primary">5</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-foreground mb-2">
+                                <span class="en">What triggered this episode?</span>
+                                <span class="ar hidden">ما الذي تسبب في هذه النوبة؟</span>
+                            </label>
+                            <input type="text" class="w-full px-3 py-2 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary" data-implementation="Add validation and binding">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-foreground mb-2">
+                                <span class="en">Additional notes</span>
+                                <span class="ar hidden">ملاحظات إضافية</span>
+                            </label>
+                            <textarea class="w-full px-3 py-2 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary h-20 resize-none" data-implementation="Add validation and binding"></textarea>
+                        </div>
+
+                        <div class="flex space-x-3 pt-4">
+                            <button onclick="hideAddEntry()" class="flex-1 bg-muted text-muted-foreground py-3 rounded-xl font-medium">
+                                <span class="en">Cancel</span>
+                                <span class="ar hidden">إلغاء</span>
+                            </button>
+                            <button onclick="saveEntry()" class="flex-1 bg-primary text-primary-foreground py-3 rounded-xl font-medium" data-event="click:saveJournalEntry">
+                                <span class="en">Save</span>
+                                <span class="ar hidden">حفظ</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Screen -->
+        <div id="settings-screen" class="screen hidden">
+            <!-- @COMPONENT: Settings Header -->
+            <header class="gradient-bg px-6 pt-12 pb-6">
+                <button onclick="showScreen('home-screen')" class="mb-4 text-foreground">
+                    <i class="fas fa-arrow-left text-xl"></i>
+                </button>
+                <h1 class="text-2xl font-semibold text-foreground">
+                    <span class="en">Settings</span>
+                    <span class="ar hidden">الإعدادات</span>
+                </h1>
+                <p class="text-muted-foreground mt-2">
+                    <span class="en">Customize your experience</span>
+                    <span class="ar hidden">خصص تجربتك</span>
+                </p>
+            </header>
+
+            <!-- @COMPONENT: Settings Options -->
+            <main class="px-6 py-6 space-y-6">
+                <!-- Language Setting -->
+                <div class="bg-card border border-border rounded-2xl p-6">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+                                <i class="fas fa-globe text-primary-foreground"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-foreground">
+                                    <span class="en">Language</span>
+                                    <span class="ar hidden">اللغة</span>
+                                </h3>
+                                <p class="text-sm text-muted-foreground" id="current-language">
+                                    <span class="en">English</span>
+                                    <span class="ar hidden">العربية</span>
+                                </p>
+                            </div>
+                        </div>
+                        <button onclick="toggleLanguage()" class="bg-primary hover:bg-blue-300 text-primary-foreground px-4 py-2 rounded-xl text-sm font-medium transition-colors" data-event="click:toggleLanguage">
+                            <span class="en">عربي</span>
+                            <span class="ar hidden">English</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Security Setting (Placeholder) -->
+                <div class="bg-card border border-border rounded-2xl p-6">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-secondary rounded-full flex items-center justify-center">
+                                <i class="fas fa-fingerprint text-secondary-foreground"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-foreground">
+                                    <span class="en">Biometric Lock</span>
+                                    <span class="ar hidden">القفل البيومتري</span>
+                                </h3>
+                                <p class="text-sm text-muted-foreground">
+                                    <span class="en">Secure app with fingerprint</span>
+                                    <span class="ar hidden">تأمين التطبيق ببصمة الإصبع</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="w-12 h-6 bg-muted rounded-full relative cursor-pointer" data-implementation="Toggle switch component">
+                            <div class="w-5 h-5 bg-white rounded-full shadow-md transform translate-x-0.5 translate-y-0.5 transition-transform"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Management -->
+                <div class="bg-card border border-border rounded-2xl p-6">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-database text-red-600"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-foreground">
+                                <span class="en">Data Management</span>
+                                <span class="ar hidden">إدارة البيانات</span>
+                            </h3>
+                            <p class="text-sm text-muted-foreground">
+                                <span class="en">Manage your personal data</span>
+                                <span class="ar hidden">إدارة بياناتك الشخصية</span>
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3 pt-4 border-t border-border">
+                        <button onclick="exportData()" class="w-full text-left p-3 hover:bg-muted rounded-xl transition-colors" data-event="click:exportData">
+                            <div class="flex items-center space-x-3">
+                                <i class="fas fa-download text-primary"></i>
+                                <span class="text-foreground">
+                                    <span class="en">Export Journal Data</span>
+                                    <span class="ar hidden">تصدير بيانات المذكرات</span>
+                                </span>
+                            </div>
+                        </button>
+                        
+                        <button onclick="clearData()" class="w-full text-left p-3 hover:bg-red-50 rounded-xl transition-colors" data-event="click:clearAllData">
+                            <div class="flex items-center space-x-3">
+                                <i class="fas fa-trash text-red-500"></i>
+                                <span class="text-red-600">
+                                    <span class="en">Clear All Data</span>
+                                    <span class="ar hidden">مسح جميع البيانات</span>
+                                </span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- App Info -->
+                <div class="bg-card border border-border rounded-2xl p-6">
+                    <div class="text-center space-y-2">
+                        <i class="fas fa-heart text-2xl text-primary"></i>
+                        <h3 class="font-semibold text-foreground">Calm Mind</h3>
+                        <p class="text-sm text-muted-foreground">Version 1.0.0</p>
+                        <p class="text-xs text-muted-foreground">
+                            <span class="en">Made with care for mental wellness</span>
+                            <span class="ar hidden">صُنع بعناية للصحة النفسية</span>
+                        </p>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Success Message (Hidden by default) -->
+        <div id="success-message" class="fixed top-20 left-1/2 transform -translate-x-1/2 bg-accent text-accent-foreground px-6 py-3 rounded-2xl shadow-lg hidden z-50 fade-in">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-check-circle"></i>
+                <span>
+                    <span class="en">Well done! You are calming down.</span>
+                    <span class="ar hidden">أحسنت! جسدك بدأ يهدأ.</span>
+                </span>
+            </div>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: App Container -->
+
+    <script>
+        // TODO: Implement proper state management with Riverpod equivalent
+        // TODO: Implement Hive local storage for journal entries
+        // TODO: Implement proper localization system
+        
+        let currentLanguage = 'en';
+        
+        (function() {
+            // Screen Management
+            function showScreen(screenId) {
+                document.querySelectorAll('.screen').forEach(screen => {
+                    screen.classList.add('hidden');
+                });
+                document.getElementById(screenId).classList.remove('hidden');
+                document.getElementById(screenId).classList.add('fade-in');
+            }
+
+            // Language Toggle
+            function toggleLanguage() {
+                currentLanguage = currentLanguage === 'en' ? 'ar' : 'en';
+                
+                // Update document direction
+                document.documentElement.dir = currentLanguage === 'ar' ? 'rtl' : 'ltr';
+                document.documentElement.lang = currentLanguage;
+                
+                // Toggle visibility of language-specific elements
+                document.querySelectorAll('.en').forEach(el => {
+                    el.classList.toggle('hidden', currentLanguage !== 'en');
+                });
+                document.querySelectorAll('.ar').forEach(el => {
+                    el.classList.toggle('hidden', currentLanguage !== 'ar');
+                });
+
+                // Add RTL class to body if Arabic
+                if (currentLanguage === 'ar') {
+                    document.body.classList.add('rtl');
+                } else {
+                    document.body.classList.remove('rtl');
+                }
+            }
+
+            // SOS Completion
+            function completeSOS() {
+                document.getElementById('success-message').classList.remove('hidden');
+                setTimeout(() => {
+                    document.getElementById('success-message').classList.add('hidden');
+                    showScreen('home-screen');
+                }, 3000);
+            }
+
+            // Journal Entry Management
+            function showAddEntry() {
+                document.getElementById('add-entry-form').classList.remove('hidden');
+            }
+
+            function hideAddEntry() {
+                document.getElementById('add-entry-form').classList.add('hidden');
+            }
+
+            function saveEntry() {
+                // TODO: Implement actual save functionality with local storage
+                hideAddEntry();
+                // Show success feedback
+                const successMsg = document.getElementById('success-message');
+                successMsg.querySelector('span .en').textContent = 'Entry saved successfully!';
+                successMsg.querySelector('span .ar').textContent = 'تم حفظ المذكرة بنجاح!';
+                successMsg.classList.remove('hidden');
+                setTimeout(() => {
+                    successMsg.classList.add('hidden');
+                }, 2000);
+            }
+
+            // Settings Actions
+            function exportData() {
+                // TODO: Implement data export functionality
+                console.log('Exporting data...');
+            }
+
+            function clearData() {
+                if (confirm('Are you sure you want to clear all data? This cannot be undone.')) {
+                    // TODO: Implement data clearing functionality
+                    console.log('Clearing all data...');
+                }
+            }
+
+            // Intensity Slider
+            const slider = document.getElementById('intensity-slider');
+            const valueDisplay = document.getElementById('intensity-value');
+            
+            if (slider && valueDisplay) {
+                slider.addEventListener('input', (e) => {
+                    valueDisplay.textContent = e.target.value;
+                });
+            }
+
+            // Global function assignments for onclick handlers
+            window.showScreen = showScreen;
+            window.toggleLanguage = toggleLanguage;
+            window.completeSOS = completeSOS;
+            window.showAddEntry = showAddEntry;
+            window.hideAddEntry = hideAddEntry;
+            window.saveEntry = saveEntry;
+            window.exportData = exportData;
+            window.clearData = clearData;
+
+            // Initialize default screen
+            showScreen('home-screen');
+        })();
+    </script>
+</body>
+</html>
